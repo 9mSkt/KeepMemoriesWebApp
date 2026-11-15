@@ -7,7 +7,7 @@ export function jsonError(status: number, error: string, message?: string): Next
   return NextResponse.json({ error, message: message ?? error }, { status });
 }
 
-/** Absolute base URL of the app: APP_URL (or NEXT_PUBLIC_APP_URL), else derived from the request. */
+/** Absolute base URL of the app: NEXT_PUBLIC_APP_URL, else derived from the request. */
 export async function appUrl(): Promise<string> {
   if (env.appUrl) return env.appUrl.replace(/\/+$/, "");
   const h = await headers();
