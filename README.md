@@ -94,7 +94,7 @@ has connected, or they'll need to reconnect.
    - Authorised redirect URI: `https://<your-app>.vercel.app/api/google/callback`
      (add `http://localhost:3000/api/google/callback` too for local testing).
    - Copy the client ID/secret → `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
-5. `GOOGLE_REDIRECT_URI` = the same callback URL. Leave it empty to derive it from `NEXT_PUBLIC_APP_URL`.
+5. `GOOGLE_REDIRECT_URI` = the same callback URL. Leave it empty to derive it from `APP_URL`.
 
 > **Why the couple pastes a share link:** since March 2025 the Google Photos API only lets an app add to albums
 > it created and can't share albums. So the app creates the album with the couple's sign-in, and the couple
@@ -105,7 +105,7 @@ has connected, or they'll need to reconnect.
 
 1. Push the repo to GitHub and import it at [vercel.com/new](https://vercel.com/new) (framework: Next.js; the
    build command `pnpm build` is detected automatically).
-2. **Settings → Environment Variables:** add everything from `.env.example`. Set `NEXT_PUBLIC_APP_URL` to the
+2. **Settings → Environment Variables:** add everything from `.env.example`. Set `APP_URL` to the
    production URL, e.g. `https://keep-memories.vercel.app`.
 3. Deploy, then make sure the Google OAuth redirect URI matches the deployed URL exactly.
 

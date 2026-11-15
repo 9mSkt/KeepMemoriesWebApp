@@ -16,7 +16,7 @@ export class GoogleAuthError extends Error {
 }
 
 export function redirectUri(appUrl: string): string {
-  return env.googleRedirectUri ?? `${appUrl}/api/google/callback`;
+  return env.googleRedirectUri?.replace(/\/+$/, "") ?? `${appUrl}/api/google/callback`;
 }
 
 export function buildAuthUrl(state: string, appUrl: string): string {

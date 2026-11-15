@@ -8,7 +8,8 @@ function read(name: string): string | undefined {
 }
 
 export const env = {
-  appUrl: read("NEXT_PUBLIC_APP_URL"),
+  // APP_URL preferred; NEXT_PUBLIC_APP_URL still accepted. Server-only, so no public prefix is needed.
+  appUrl: read("APP_URL") ?? read("NEXT_PUBLIC_APP_URL"),
   googleClientId: read("GOOGLE_CLIENT_ID"),
   googleClientSecret: read("GOOGLE_CLIENT_SECRET"),
   googleRedirectUri: read("GOOGLE_REDIRECT_URI"),
