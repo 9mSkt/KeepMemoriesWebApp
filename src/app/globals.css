@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ── Keep Memories design tokens (CLAUDE.md §10) ─────────────────────────── */
+:root {
+  --km-ivory: #fbf7f0;
+  --km-cream: #f3ede2;
+  --km-sage: #8a9a7b;
+  --km-sage-dark: #5f7052;
+  --km-rose: #c9a19a;
+  --km-gold: #b8975a;
+  --km-ink: #3a3530;
+  --km-muted: #8b8178;
+  /* Text-safe muted: #8B8178 is only ~3.5:1 on ivory, below WCAG AA for body text.
+     See docs/decisions.md. Use `text-muted-text` for any readable text. */
+  --km-muted-text: #6f665e;
+  --km-line: #e4dacb;
+  --km-white: #ffffff;
+  --km-night: #1e1b18;
+  --km-stamp: #ff8c33;
+
+  --km-shadow-soft: 0 8px 24px rgba(58, 51, 46, 0.12);
+  --km-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-ivory: var(--km-ivory);
+  --color-cream: var(--km-cream);
+  --color-sage: var(--km-sage);
+  --color-sage-dark: var(--km-sage-dark);
+  --color-rose: var(--km-rose);
+  --color-gold: var(--km-gold);
+  --color-ink: var(--km-ink);
+  --color-muted: var(--km-muted);
+  --color-muted-text: var(--km-muted-text);
+  --color-line: var(--km-line);
+  --color-white: var(--km-white);
+  --color-night: var(--km-night);
+  --color-stamp: var(--km-stamp);
+
+  /* Latin font first; Thai glyphs fall through to the Thai font via unicode-range. */
+  --font-sans: var(--font-dm-sans), var(--font-noto-sans-thai), system-ui, sans-serif;
+  --font-script: var(--font-great-vibes), var(--font-charm), cursive;
+  --font-serif: var(--font-cormorant), var(--font-noto-serif-thai), Georgia, serif;
+  --font-typewriter: var(--font-courier-prime), var(--font-sarabun), ui-monospace, monospace;
+
+  --shadow-soft: var(--km-shadow-soft);
+  --ease-km: var(--km-ease);
+}
+
+/* Safe-area padding helpers for notched phones. */
+@utility pt-safe {
+  padding-top: max(env(safe-area-inset-top), 1rem);
+}
+@utility pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 1rem);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--km-ivory);
+  color: var(--km-ink);
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Film strength slider: sage fill on a `line` track. Set --fill to the value as a percentage. */
+.km-range {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.km-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--km-sage) var(--fill, 50%), var(--km-line) var(--fill, 50%));
+}
+.km-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--km-line);
+}
+.km-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--km-sage);
+}
+.km-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -9px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--km-white);
+  border: 2px solid var(--km-sage);
+  box-shadow: 0 2px 6px rgba(58, 51, 46, 0.2);
+}
+.km-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--km-white);
+  border: 2px solid var(--km-sage);
+}
+.km-range:focus-visible {
+  outline: 2px solid var(--km-gold);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
