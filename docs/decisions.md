@@ -121,3 +121,8 @@ bucket `covers` (migration 0002). In dev mode they're stored inline as data URLs
   says so, and the link sits in a read-only field that selects itself when tapped.
 - **e2e build folder:** Playwright's dev server builds into `.next-e2e` (`NEXT_DIST_DIR`), so it can run while
   `pnpm dev` is using `.next`. Two dev servers sharing `.next` corrupt it.
+- **Reviewing queued photos:** when a guest shoots or picks several photos before sending, *Choose a film* (and
+  *Add your words* when there are 2+) shows a strip of every queued photo. Tapping a thumbnail edits that photo;
+  **Remove this photo** deletes the selected one (after a confirm) from the queue and from IndexedDB. Removal uses
+  a separate 44 px button rather than a small × on each thumbnail, to keep tap targets ≥ 44 px and avoid
+  accidental deletes.

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { EditTopBar } from "@/components/guest/EditTopBar";
 import { FilterPicker } from "@/components/guest/FilterPicker";
+import { QueueStrip } from "@/components/guest/QueueStrip";
 import { paint, useCurrentDraft } from "@/components/guest/useDraft";
 import { useGuestSession } from "@/components/guest/useGuestSession";
 import { buttonClasses, ICON_STROKE } from "@/components/ui";
@@ -23,8 +24,6 @@ export default function FilterPage() {
   const strength = useEditStore((s) => s.strength);
   const setFilter = useEditStore((s) => s.setFilter);
   const setStrength = useEditStore((s) => s.setStrength);
-  const queue = useEditStore((s) => s.queue);
-  const index = useEditStore((s) => s.index);
 
   const baseRef = useRef<HTMLCanvasElement>(null);
   const filmRef = useRef<HTMLCanvasElement>(null);
@@ -55,9 +54,7 @@ export default function FilterPage() {
       <EditTopBar title={t("filter.title")} step="1 / 2" backHref={`/e/${event.slug}/camera`} />
 
       <div className="flex flex-1 flex-col gap-5 px-5">
-        {queue.length > 1 && (
-          <p className="text-center text-[13px] text-muted-text">{t("edit.photoOf", { i: index + 1, n: queue.length })}</p>
-        )}
+        <QueueStrip />
 
         {/* White "print" frame */}
         <div className="mx-auto w-full max-w-[340px] bg-white p-3 shadow-soft">

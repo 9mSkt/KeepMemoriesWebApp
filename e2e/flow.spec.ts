@@ -134,6 +134,43 @@ test("guest goes from welcome to Memory saved and the photo reaches the album", 
   await guest.close();
 });
 
+test("guest can pick and remove queued photos before sending", async ({ page }) => {
+  const slug = await createEvent(page, `Queue ${Date.now().toString(36)}`);
+  const guest = await guestContext(page);
+  const g = await guest.newPage();
+  await g.goto(`/e/${slug}`);
+  await settle(g);
+  await g.getByLabel("Your name").fill("Uncle Lek");
+  await g.getByRole("button", { name: "Start capturing memories" }).click();
+  await settle(g);
+
+  const jpeg = await makeJpeg(g);
+  await g.getByTestId("gallery-input").setInputFiles(
+    ["a", "b", "c"].map((n) => ({ name: `${n}.jpg`, mimeType: "image/jpeg", buffer: jpeg })),
+  );
+  await expect(g).toHaveURL(new RegExp(`/e/${slug}/edit/filter$`));
+  await settle(g);
+  await expect(g.getByText("Your photos (3)")).toBeVisible();
+
+  // Select the second photo, then remove it.
+  await g.getByRole("button", { name: "Photo 2 of 3" }).click();
+  await expect(g.getByRole("button", { name: "Photo 2 of 3" })).toHaveAttribute("aria-current", "true");
+  g.once("dialog", (d) => void d.accept());
+  await g.getByRole("button", { name: "Remove this photo" }).click();
+  await expect(g.getByText("Your photos (2)")).toBeVisible();
+  await expect(g.getByRole("button", { name: "Photo 2 of 2" })).toHaveAttribute("aria-current", "true");
+
+  // Removing survives a refresh.
+  await g.reload();
+  await settle(g);
+  await expect(g.getByText("Your photos (2)")).toBeVisible();
+
+  await g.getByRole("link", { name: "Next: add your words" }).click();
+  await settle(g);
+  await expect(g.getByRole("button", { name: "Send 2 photos to the album" })).toBeVisible();
+  await guest.close();
+});
+
 test("Thai language toggle persists across guest screens", async ({ page }) => {
   const slug = await createEvent(page, `Thai ${Date.now().toString(36)}`);
   const guest = await guestContext(page);

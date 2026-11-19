@@ -26,6 +26,8 @@ export interface EditState {
   forEvent: (slug: string) => void;
   addDrafts: (ids: string[]) => void;
   removeDrafts: (ids: string[]) => void;
+  /** Make queue[i] the photo being edited. */
+  setIndex: (i: number) => void;
   setFilter: (id: FilmPresetId) => void;
   setStrength: (v: number) => void;
   setWish: (v: string) => void;
@@ -60,8 +62,13 @@ export const useEditStore = create<EditState>()(
       removeDrafts: (ids) =>
         set((s) => {
           const queue = s.queue.filter((id) => !ids.includes(id));
-          return { queue, index: Math.min(s.index, Math.max(0, queue.length - 1)) };
+          // Stay on the same photo if it survived; otherwise move to the one that took its place.
+          const kept = queue.indexOf(s.queue[s.index]);
+          const removedBefore = s.queue.slice(0, s.index).filter((id) => ids.includes(id)).length;
+          const index = kept >= 0 ? kept : s.index - removedBefore;
+          return { queue, index: Math.min(Math.max(0, index), Math.max(0, queue.length - 1)) };
         }),
+      setIndex: (i) => set((s) => ({ index: Math.min(Math.max(0, i), Math.max(0, s.queue.length - 1)) })),
       setFilter: (filterId) => set({ filterId }),
       setStrength: (strength) => set({ strength: Math.min(1, Math.max(0, strength)) }),
       setWish: (wish) => set({ wish }),

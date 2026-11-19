@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Loader2, RotateCcw, Upload } from "lucide-react";
 import { EditTopBar } from "@/components/guest/EditTopBar";
+import { QueueStrip } from "@/components/guest/QueueStrip";
 import { renderAndSend } from "@/components/guest/send";
 import { TextOverlayEditor } from "@/components/guest/TextOverlayEditor";
 import { paint, useCurrentDraft } from "@/components/guest/useDraft";
@@ -166,6 +167,8 @@ export default function TextPage() {
             </div>
           )}
         </div>
+
+        {multi && <QueueStrip disabled={busy} />}
 
         <TextOverlayEditor
           name={name}
